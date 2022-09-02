@@ -8,6 +8,7 @@ import SortTrendingCollections from 'components/SortTrendingCollections'
 import { useMediaQuery } from '@react-hookz/web'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
+import YearlyCollectionTable from 'components/YearlyCollectionTable'
 
 // Environment variables
 // For more information about these variables
@@ -36,7 +37,7 @@ const metadata = {
     <meta name="description" content={description} />
   ),
   tagline: (tagline: string | undefined) => (
-    <>{tagline || 'Discover, buy and sell NFTs'}</>
+    <>{tagline || 'Buy and sell Historical NFTs'}</>
   ),
   image: (image?: string) => {
     if (image) {
@@ -88,11 +89,11 @@ const Home: NextPage<Props> = ({ fallback }) => {
       <div className="col-span-full px-6 md:px-16">
         <div className="mb-9 flex w-full items-center justify-between">
           <div className="reservoir-h4 dark:text-white">
-            Trending Collections
+            Trending Historicals
           </div>
           {!isSmallDevice && <SortTrendingCollections />}
         </div>
-        <TrendingCollectionTable fallback={fallback} />
+        <YearlyCollectionTable fallback={fallback} />
       </div>
     </Layout>
   )

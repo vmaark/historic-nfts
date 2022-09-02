@@ -15,7 +15,8 @@ type Collections = paths['/collections/v4']['get']['responses']['200']['schema']
 
 export default function useCollections(
   router: NextRouter,
-  fallback?: Collections
+  fallback?: Collections,
+  collectionsSetId?: string
 ) {
   const { ref, inView } = useInView()
 
@@ -25,7 +26,7 @@ export default function useCollections(
 
   const collections = useSWRInfinite<Collections>(
     (index, previousPageData) =>
-      getKey(pathname, sortBy, index, previousPageData),
+      getKey(pathname, sortBy, collectionsSetId, index, previousPageData),
     fetcher,
     {
       revalidateFirstPage: false,
@@ -50,10 +51,12 @@ export default function useCollections(
 const getKey: (
   pathname: string,
   sortBy: string | undefined,
+  collectionsSetId: string | undefined,
   ...base: Parameters<SWRInfiniteKeyLoader>
 ) => ReturnType<SWRInfiniteKeyLoader> = (
   pathname: string,
   sortBy: string | undefined,
+  collectionsSetId: string | undefined,
   index: number,
   previousPageData: paths['/collections/v4']['get']['responses']['200']['schema']
 ) => {
@@ -65,9 +68,8 @@ const getKey: (
     sortBy: '1DayVolume',
   }
 
-  if (COLLECTION && !COMMUNITY) query.contract = [COLLECTION]
-  if (COMMUNITY) query.community = COMMUNITY
-  if (COLLECTION_SET_ID) query.collectionsSetId = COLLECTION_SET_ID
+  if (COLLECTION) query.contract = [COLLECTION]
+  if (collectionsSetId) query.collectionsSetId = collectionsSetId
 
   if (previousPageData) query.continuation = previousPageData.continuation
 

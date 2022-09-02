@@ -7,6 +7,7 @@ import setParams from 'lib/params'
 import NavbarLogo from 'components/navbar/NavbarLogo'
 import ThemeSwitcher from './ThemeSwitcher'
 import CartMenu from './CartMenu'
+import YearDropdown from './YearDropdown'
 
 const SearchCollections = dynamic(() => import('./SearchCollections'))
 const CommunityDropdown = dynamic(() => import('./CommunityDropdown'))
@@ -69,19 +70,16 @@ const Navbar: FC = () => {
           initialResults =
             (await res.json()) as paths['/search/collections/v1']['get']['responses']['200']['schema']
         }
+        console.log('initial results', initialResults)
 
         const smallCommunity =
           initialResults?.collections &&
           initialResults.collections.length >= 2 &&
           initialResults.collections.length <= 10
 
-        if (
-          !DEFAULT_TO_SEARCH &&
-          (COMMUNITY || COLLECTION_SET_ID) &&
-          smallCommunity
-        ) {
+        if (true) {
           setFilterComponent(
-            <CommunityDropdown
+            <YearDropdown
               collections={initialResults?.collections}
               defaultCollectionId={COLLECTION}
             />

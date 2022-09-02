@@ -1,5 +1,6 @@
 import { FC, useState } from 'react'
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
+import * as ScrollArea from '@radix-ui/react-scroll-area'
 import { paths } from '@reservoir0x/reservoir-kit-client'
 import { FiChevronDown } from 'react-icons/fi'
 import Link from 'next/link'
@@ -25,50 +26,52 @@ const CommunityDropdown: FC<Props> = ({ collections, defaultCollectionId }) => {
 
       <DropdownMenu.Content
         sideOffset={43}
-        className="max-w-[300px] rounded-2xl bg-white shadow-md radix-side-bottom:animate-slide-down dark:bg-neutral-900 md:max-w-[422px]"
+        className="max-h-[300px] max-w-[300px] overflow-scroll rounded-2xl bg-white shadow-md radix-side-bottom:animate-slide-down dark:bg-neutral-900 md:max-w-[422px]"
       >
-        {collections
-          ?.sort((a, b) => {
-            if (
-              a.collectionId !== defaultCollectionId &&
-              b.collectionId === defaultCollectionId
-            ) {
-              return 1
-            }
-            if (
-              a.collectionId === defaultCollectionId &&
-              b.collectionId !== defaultCollectionId
-            ) {
-              return -1
-            }
-            return 0
-          })
-          .map((collection) => {
-            return (
-              <DropdownMenu.Item
-                key={collection.collectionId}
-                className="reservoir-gray-dropdown-item overflow-hidden rounded-none border-b p-0 outline-none first:rounded-t-2xl last:rounded-b-2xl last:border-b-0 dark:border-[#525252] dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
-              >
-                <Link href={`/collections/${collection.collectionId}`}>
-                  <a
-                    onClick={() => {
-                      setOpen(false)
-                    }}
-                    className={`flex max-w-full items-center gap-2 rounded-none px-6 py-4 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800`}
-                  >
-                    <img
-                      src={collection.image}
-                      alt={`${collection.name} Collection Image`}
-                      className="h-9 w-9 shrink-0 overflow-hidden rounded-full"
-                    />
-                    <p className="reservoir-h6 truncate dark:text-white">
-                      {collection.name}
-                    </p>
-                  </a>
-                </Link>
-              </DropdownMenu.Item>
-            )
-          })}
+        <ScrollArea.Root>
+          {collections
+            ?.sort((a, b) => {
+              if (
+                a.collectionId !== defaultCollectionId &&
+                b.collectionId === defaultCollectionId
+              ) {
+                return 1
+              }
+              if (
+                a.collectionId === defaultCollectionId &&
+                b.collectionId !== defaultCollectionId
+              ) {
+                return -1
+              }
+              return 0
+            })
+            .map((collection) => {
+              return (
+                <DropdownMenu.Item
+                  key={collection.collectionId}
+                  className="reservoir-gray-dropdown-item overflow-hidden rounded-none border-b p-0 outline-none first:rounded-t-2xl last:rounded-b-2xl last:border-b-0 dark:border-[#525252] dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+                >
+                  <Link href={`/collections/${collection.collectionId}`}>
+                    <a
+                      onClick={() => {
+                        setOpen(false)
+                      }}
+                      className={`flex max-w-full items-center gap-2 rounded-none px-6 py-4 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800`}
+                    >
+                      <img
+                        src={collection.image}
+                        alt={`${collection.name} Collection Image`}
+                        className="h-9 w-9 shrink-0 overflow-hidden rounded-full"
+                      />
+                      <p className="reservoir-h6 truncate dark:text-white">
+                        {collection.name}
+                      </p>
+                    </a>
+                  </Link>
+                </DropdownMenu.Item>
+              )
+            })}
+        </ScrollArea.Root>
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   )
